@@ -21,7 +21,8 @@ for i in ipairs(trees) do
 	local oldnode = minetest.registered_nodes[nodename]
 	if not oldnode then return end
 	local newnode = table.copy(oldnode)
-	print(dump(newnode.tiles))
+
+	minetest.register_node(":"..nodename.."_cube", oldnode)
 
 	newnode.drawtype = "mesh"
 	newnode.mesh = "round_trunks_mesh.obj"
@@ -31,6 +32,22 @@ for i in ipairs(trees) do
 
 	minetest.register_node(":"..nodename, newnode)
 	table.insert(trees2, nodename)
+
+	minetest.register_craft({
+		output = newnode.name.." 4",
+		recipe = {
+			{ oldnode.name, oldnode.name },
+			{ oldnode.name, oldnode.name }
+		}
+	})
+
+	minetest.register_craft({
+		output = oldnode.name.." 4",
+		recipe = {
+			{ newnode.name, newnode.name },
+			{ newnode.name, newnode.name }
+		}
+	})
 end
 
 minetest.register_abm({
