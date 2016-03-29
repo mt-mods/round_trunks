@@ -12,44 +12,51 @@ local trees={
 	{ "default:cactus",      "default_cactus_top.png"     }
 }
 
-local trees2 = {}
+--local trees2 = {}
 
-for i in ipairs(trees) do
-	local nodename = trees[i][1]
-	local top =      trees[i][2]
+for _,tree in pairs(trees) do
+	local nodename, top = unpack(tree)
 
 	local oldnode = minetest.registered_nodes[nodename]
-	if not oldnode then return end
-	local newnode = table.copy(oldnode)
+	if not oldnode then
+		error("[round_trunks] "..nodename.." is not a node.")
+	end
 
-	minetest.register_node(":"..nodename.."_cube", oldnode)
+	local def = {}
+	for i in pairs(oldnode) do
+		def[i] = rawget(oldnode, i)
+	end
 
-	newnode.drawtype = "mesh"
-	newnode.mesh = "round_trunks_mesh.obj"
-	newnode.tiles[1] = top
-	newnode.tiles[2] = top
-	newnode.paramtype = "light"
+	minetest.override_item(nodename, {
+		drawtype = "mesh",
+		mesh = "round_trunks_mesh.obj",
+		tiles = {top, top, def.tiles[3]},
+		paramtype = "light",
+	})
 
-	minetest.register_node(":"..nodename, newnode)
-	table.insert(trees2, nodename)
+	--trees2[#trees2+1] = nodename
+
+	minetest.register_node(":"..nodename.."_cube", def)
+
 
 	minetest.register_craft({
-		output = newnode.name.." 4",
+		output = nodename.." 4",
 		recipe = {
-			{ oldnode.name, oldnode.name },
-			{ oldnode.name, oldnode.name }
+			{ def.name, def.name },
+			{ def.name, def.name }
 		}
 	})
 
 	minetest.register_craft({
-		output = oldnode.name.." 4",
+		output = def.name.." 4",
 		recipe = {
-			{ newnode.name, newnode.name },
-			{ newnode.name, newnode.name }
+			{ nodename, nodename },
+			{ nodename, nodename }
 		}
 	})
 end
 
+--[[ If this abm was good for something, it should have been documented.
 minetest.register_abm({
 	nodenames = trees2,
 	chance = 2,
@@ -60,3 +67,4 @@ minetest.register_abm({
 		end
 	end
 })
+--]]
