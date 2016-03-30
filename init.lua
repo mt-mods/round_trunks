@@ -12,7 +12,7 @@ local trees={
 	{ "default:cactus",      "default_cactus_top.png"     }
 }
 
---local trees2 = {}
+local trees2 = {}
 
 for _,tree in pairs(trees) do
 	local nodename, top = unpack(tree)
@@ -34,7 +34,7 @@ for _,tree in pairs(trees) do
 		paramtype = "light",
 	})
 
-	--trees2[#trees2+1] = nodename
+	trees2[#trees2+1] = nodename
 
 	minetest.register_node(":"..nodename.."_cube", def)
 
@@ -56,15 +56,13 @@ for _,tree in pairs(trees) do
 	})
 end
 
---[[ If this abm was good for something, it should have been documented.
-minetest.register_abm({
+-- [[ This lbm should fix black trunks.
+minetest.register_lbm({
+	name = "round_trunks:trunkfix",
 	nodenames = trees2,
-	chance = 2,
-	interval = 1,
 	action = function(pos, node)
-		if node.param1 == 0 then
-			minetest.set_node(pos, {name = node.name, param2 = node.param2 })
-		end
+		node.param1 = nil
+		minetest.set_node(pos, node)
 	end
 })
 --]]
