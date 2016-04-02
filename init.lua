@@ -9,6 +9,7 @@ local trees={
 	{ "default:jungletree",  "default_jungletree_top.png" },
 	{ "default:pine_tree",   "round_pine_tree_top.png"    },
 	{ "default:acacia_tree", "round_acacia_tree_top.png"  },
+	{ "default:aspen_tree",  "round_aspen_tree_top.png"   },
 	{ "default:cactus",      "default_cactus_top.png"     }
 }
 
