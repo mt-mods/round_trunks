@@ -1,8 +1,7 @@
 -- simple mesh-based round trees mod
 -- by VanessaEzekowitz
 --
--- Textures borrowed/derived from Mossmanikin's alternate trunks mod, cc-by-sa
--- code: WTFPL
+-- Textures borrowed/derived from Mossmanikin's alternate trunks mod
 
 local trees={
 	{ "default:tree",        "round_default_tree_top.png" },
